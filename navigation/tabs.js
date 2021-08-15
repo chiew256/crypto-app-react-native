@@ -7,34 +7,121 @@ import {
     StyleSheet
 } from "react-native";
 import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom-tabs"
+import LinearGradient from 'react-native-linear-gradient';
+import tw from 'tailwind-react-native-classnames';
 
 import { Home } from "../screens"
 import { COLORS, FONTS, icons } from "../constants"
 
 const Tab = createBottomTabNavigator()
+const TabBarCustomButtom = ({ children, onPress }) => {
+    return(
+        <TouchableOpacity
+            style={[tw`bottom-8 justify-center items-center`, {...styles.shadow}]}
+            onPress={onPress}>
+            <LinearGradient
+            colors={[COLORS.primary, COLORS.secondary]}
+                style={tw`w-16 h-16 rounded-full`}>
+                {children}
+            </LinearGradient>
+
+        </TouchableOpacity>
+    )
+}
 
 const Tabs = () => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator
+            tabBarOptions={{
+                showLabel: false,
+                style: {
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    elevation: 0,
+                    backgroundColor: COLORS.white,
+                    borderTopColor: "transparent",
+                    height: 100,
+                }
+            }}
+        >
             <Tab.Screen
                 name="Home"
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={tw`items-center justify-center`}>
+                            <Image
+                                source={icons.home}
+                                resizeMode="contain"
+                                style={[tw`w-6 h-6`, {tintColor: focused ? COLORS.primary : COLORS.black}]}/>
+                            <Text style={{color: focused ? COLORS.primary : COLORS.black, ...FONTS.body5}}>HOME</Text>
+                        </View>
+                    )
+                }}
             />
             <Tab.Screen
                 name="Portfolio"
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={tw`items-center justify-center`}>
+                            <Image
+                                source={icons.pie_chart}
+                                resizeMode="contain"
+                                style={[tw`w-6 h-6`, {tintColor: focused ? COLORS.primary : COLORS.black}]}/>
+                            <Text style={{color: focused ? COLORS.primary : COLORS.black, ...FONTS.body5}}>PORTFLIO</Text>
+                        </View>
+                    )
+                }}
             />
             <Tab.Screen
                 name="Transaction"
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <Image
+                            source={icons.transaction}
+                            resizeMode="contain"
+                            style={[tw`w-6 h-6`, {tintColor: COLORS.white}]}/>
+                    ),
+                    tabBarButton: (props) => (
+                        <TabBarCustomButtom
+                            {...props}
+                        />
+                    )
+                }}
             />
             <Tab.Screen
                 name="Prices"
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={tw`items-center justify-center`}>
+                            <Image
+                                source={icons.line_graph}
+                                resizeMode="contain"
+                                style={[tw`w-6 h-6`, {tintColor: focused ? COLORS.primary : COLORS.black}]}/>
+                            <Text style={{color: focused ? COLORS.primary : COLORS.black, ...FONTS.body5}}>PRICES</Text>
+                        </View>
+                    )
+                }}
             />
             <Tab.Screen
                 name="Settings"
                 component={Home}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={tw`items-center justify-center`}>
+                            <Image
+                                source={icons.settings}
+                                resizeMode="contain"
+                                style={[tw`w-6 h-6`, {tintColor: focused ? COLORS.primary : COLORS.black}]}/>
+                            <Text style={{color: focused ? COLORS.primary : COLORS.black, ...FONTS.body5}}>SETTINGS</Text>
+                        </View>
+                    )
+                }}
             />
         </Tab.Navigator>
     )
